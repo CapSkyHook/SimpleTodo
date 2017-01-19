@@ -32,7 +32,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of the required functionality:
 
-<img src='http://imgur.com/a/OJK1S' title='Required Functionality Walkthrough' width='' alt='Required Functionality Walkthrough' />
+<blockquote class="imgur-embed-pub" lang="en" data-id="a/OJK1S"><a href="//imgur.com/OJK1S"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
 Here's a walkthrough of the optional functionality:
 
