@@ -15,7 +15,6 @@ The following **required** functionality is completed:
 * [x] User can **persist todo items** and retrieve them properly on app restart
 
 The following **optional** features are implemented:
- *Note: These features are still actively being worked on*
 
 * [ ] Persist the todo items [into SQLite](http://guides.codepath.com/android/Persisting-Data-to-the-Device#sqlite) instead of a text file
 * [ ] Improve style of the todo items in the list [using a custom adapter](http://guides.codepath.com/android/Using-an-ArrayAdapter-with-ListView)
@@ -32,7 +31,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of the required functionality:
 
-<blockquote class="imgur-embed-pub" lang="en" data-id="a/OJK1S"><a href="//imgur.com/OJK1S"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
+<img src='http://i.imgur.com/5WbYSYb.gif' title='Required Features Video Walkthrough' width='' alt='Required Features Video Walkthrough' />
 
 Here's a walkthrough of the optional functionality:
 
