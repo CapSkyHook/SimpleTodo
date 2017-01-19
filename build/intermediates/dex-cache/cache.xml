@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="9194c3cbf1d2c7cfc62b5ad60f735d10e39ad833">
+        <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/instant-run_fddf3ff45e0d96a869f90f74ea2a1f00539bc37e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/libs/internal_impl-23.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ea3c07504d2c8f4b13aa17c45c1b68ed9c1c3674">
+        <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/internal_impl-23.4.0_54f976bd33a3700e0cc60804694b2d582a60b1de.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c2c594cace5d83a3227b2b6e658ecbfd586d3ed9">
+        <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-23.4.0_1066b2b28b2db6b2f80b82fdaa9121399969ebb1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="e032a52a21e7a6d8f23c03abf4f49c91968dc781">
+        <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_6a0aab07bcd490958563eb31cccdc6d75dac10e5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="67bd36ee9340ec7c254108936ad16b24bed160cc">
+        <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-23.4.0_f49ba7f6f453869c90baec96fa3df32243ac5711.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Gautam/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.4.0/support-annotations-23.4.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="ffbe55fdb2bb456b1485831706a9eac3300bb6b8">
+        <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/support-annotations-23.4.0_f89007afe4cdda97162a54a3b969568801a1fecf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="de4db3785756bfb0915a9f59a9b3f2fea7407be4">
+        <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-23.4.0_12426d1859f877776db387dc69cf9b1ce9f48678.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Applications/Android Studio.app/Contents/gradle/m2repository/commons-io/commons-io/2.4/commons-io-2.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad">
+        <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/commons-io-2.4_db9d9c7f5dc9abc44c05f9a56b43532b2a4af315.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="548f06de403a9409f00554b3ee12a9fdea0e236c">
+        <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-23.4.0_a729755235f5dde05e0d98eacbdce5186ca7d392.jar" />
+    </item>
+
+</items>
