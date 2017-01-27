@@ -17,7 +17,9 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static android.media.CamcorderProfile.get;
 /**
@@ -26,25 +28,25 @@ import static android.media.CamcorderProfile.get;
 public class MainActivity extends AppCompatActivity {
 
     /**
-     * List of ToDo items
+     * Constants
      */
-    ArrayList<String> items;
+    ToDo SEED_TODO_1 = new ToDo("Fly to the moon", "Build a rocket ship in factorio and fly to the moon", new Date(), 2, 3);
+    ToDo SEED_TODO_2 = new ToDo("Tuck and Roll", "Practice evasive maneuvers", new Date(), 10, 1);
+
     /**
-     * Adapter for list view
+     * View Management Data
      */
-    ArrayAdapter<String> itemsAdapter;
-    /**
-     * List View of ToDo items
-     */
+    ArrayAdapter<ToDo> itemsAdapter;
     ListView lvItems;
-    /**
-     * Position of ToDo in original list
-     */
     private Integer currentlyEdittedItemPosition = null;
-    /**
-     * Constant for intent tracking
-     */
     private final int REQUEST_CODE = 20;
+
+    /**
+     * Todo Management Data
+     */
+    private ToDoUIManager todoUIManager;
+
+
 
     /**
      * Entry point for MainActivity, sets up ToDo app list view
@@ -53,16 +55,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        todoUIManager = new ToDoUIManager(getBaseContext());
         lvItems = (ListView) findViewById(R.id.lvItems);
-        items = new ArrayList<>();
-        readItems();
-        if (items.size() == 0) {
-            items.add("Fly to the moon");
-            items.add("Tuck and Roll");
+        ArrayList<ToDo> todoItems = todoUIManager.getItems();
+        if (todoItems.size() == 0) {
+            todoUIManager.addTodo(SEED_TODO_1);
+            todoUIManager.addTodo(SEED_TODO_2);
         }
 
-        itemsAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new ToDosAdapter(getBaseContext(), todoUIManager.getItems());
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
     }
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                 currentlyEdittedItemPosition = position;
                 Intent switchToEdit = new Intent(MainActivity.this, EditItemActivity.class);
-                switchToEdit.putExtra("toDoText", items.get(position));
+                switchToEdit.putExtra("toDoText", todoUIManager.getItems().get(position).title);
 
                 startActivityForResult(switchToEdit, REQUEST_CODE);
             }
@@ -102,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
      * @param pos position of ToDo in ToDos list
      */
     private void removeItem(int pos) {
-        items.remove(pos);
-        itemsAdapter.notifyDataSetChanged();
-        writeItems();
+        if (todoUIManager.removeTodo(pos)) {
+            itemsAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -116,7 +117,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            updateToDoText(currentlyEdittedItemPosition, data.getStringExtra("toDoText"));
+            ToDo newTodo = new ToDo();
+            newTodo.title = data.getStringExtra("toDoText");
+            updateToDoText(currentlyEdittedItemPosition, newTodo);
         }
 
     }
@@ -124,39 +127,13 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Updates text of existing ToDo
      * @param listItemID position of ToDo in ToDos list
-     * @param toDoText new value of ToDo text
+     * @param todo new value of ToDo
      */
-    private void updateToDoText(Integer listItemID, String toDoText) {
-        items.set(listItemID, toDoText);
-        itemsAdapter.notifyDataSetChanged();
-        writeItems();
+    private void updateToDoText(Integer listItemID, ToDo todo) {
+        if (todoUIManager.updateTodo(listItemID, todo)) {
+            itemsAdapter.notifyDataSetChanged();
+        }
         currentlyEdittedItemPosition = null;
-    }
-
-    /**
-     * Gets ToDos list from persistent storage on disk
-     */
-    private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        } catch (IOException e) {
-            items = new ArrayList<String>();
-        }
-    }
-
-    /**
-     * Writes ToDos list to persistent storage on disk
-     */
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            FileUtils.writeLines(todoFile, items);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -166,8 +143,36 @@ public class MainActivity extends AppCompatActivity {
     public void onAddItem(View v) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
-        itemsAdapter.add(itemText);
-        etNewItem.setText("");
-        writeItems();
+        ToDo newTodo = new ToDo();
+        newTodo.title = itemText;
+        if (todoUIManager.addTodo(newTodo)) {
+            itemsAdapter.notifyDataSetChanged();
+            etNewItem.setText("");
+        }
+    }
+}
+
+enum Priority {
+    HIGH  (3),
+    MEDIUM  (2),
+    LOW  (1);
+
+    private final int priorityNumber;
+
+    public String getString() {
+        switch (priorityNumber) {
+            case 1:
+                return "LOW";
+            case 2:
+                return "MED";
+            case 3:
+                return "HIGH";
+            default:
+                return "";
+        }
+    }
+
+    Priority(int priorityNumber) {
+        this.priorityNumber = priorityNumber;
     }
 }
