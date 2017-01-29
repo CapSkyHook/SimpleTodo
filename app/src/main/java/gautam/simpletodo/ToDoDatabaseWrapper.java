@@ -103,7 +103,7 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
             values.put(KEY_TODO_TITLE, todo.title);
             values.put(KEY_TODO_DESCRIPTION, todo.description);
             values.put(KEY_TODO_DUE_DATE, todo.dueDate.toString());
-            values.put(KEY_TODO_PRIORITY, todo.priority);
+            values.put(KEY_TODO_PRIORITY, todo.priority.toString());
             values.put(KEY_TODO_SIZE, todo.size);
             values.put(KEY_TODO_TRACKING_ID, todo.getTodoID());
 
@@ -135,7 +135,7 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
                     newTodo.description =
                             cursor.getString(cursor.getColumnIndex(KEY_TODO_DESCRIPTION));
                     newTodo.dueDate = new Date(cursor.getString(cursor.getColumnIndex(KEY_TODO_DUE_DATE)));
-                    newTodo.priority = cursor.getInt(cursor.getColumnIndex(KEY_TODO_PRIORITY));
+                    newTodo.priority = Priority.determinePriority(cursor.getInt(cursor.getColumnIndex(KEY_TODO_PRIORITY)));
                     newTodo.size = cursor.getInt(cursor.getColumnIndex(KEY_TODO_SIZE));
                     todos.add(newTodo);
                 } while(cursor.moveToNext());
@@ -157,7 +157,7 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
         values.put(KEY_TODO_TITLE, todo.title);
         values.put(KEY_TODO_DESCRIPTION, todo.description);
         values.put(KEY_TODO_DUE_DATE, todo.dueDate.toString());
-        values.put(KEY_TODO_PRIORITY, todo.priority);
+        values.put(KEY_TODO_PRIORITY, todo.priority.toString());
         values.put(KEY_TODO_SIZE, todo.size);
 
         // Updating profile picture url for user with that userName

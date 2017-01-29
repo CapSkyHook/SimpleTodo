@@ -2,6 +2,7 @@ package gautam.simpletodo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,6 +13,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
+import android.widget.Spinner;
 
 import org.apache.commons.io.FileUtils;
 
@@ -19,13 +22,16 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import static android.media.CamcorderProfile.get;
+import static gautam.simpletodo.R.id.size;
+
 /**
     Main Activity class for Todo Application allowing for CRUD functionality for ToDos
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddTodoDialogFragment.AddTodoDialogFragmentListener {
 
     /**
      * Constants
@@ -141,38 +147,22 @@ public class MainActivity extends AppCompatActivity {
      * @param v invoking view
      */
     public void onAddItem(View v) {
-        EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
-        String itemText = etNewItem.getText().toString();
-        ToDo newTodo = new ToDo();
-        newTodo.title = itemText;
-        if (todoUIManager.addTodo(newTodo)) {
+        showAddDialog();
+    }
+
+    private void showAddDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        AddTodoDialogFragment addToDoDialogFragment = AddTodoDialogFragment.newInstance();
+        addToDoDialogFragment.show(fm, "fragment_add_todo");
+    }
+
+    public void onFinishAddTodoDialogFragment(ToDo toDo, View view) {
+
+        if (todoUIManager.addTodo(toDo)) {
             itemsAdapter.notifyDataSetChanged();
-            etNewItem.setText("");
         }
-    }
-}
 
-enum Priority {
-    HIGH  (3),
-    MEDIUM  (2),
-    LOW  (1);
 
-    private final int priorityNumber;
-
-    public String getString() {
-        switch (priorityNumber) {
-            case 1:
-                return "LOW";
-            case 2:
-                return "MED";
-            case 3:
-                return "HIGH";
-            default:
-                return "";
-        }
     }
 
-    Priority(int priorityNumber) {
-        this.priorityNumber = priorityNumber;
-    }
 }

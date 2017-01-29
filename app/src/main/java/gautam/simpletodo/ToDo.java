@@ -16,7 +16,7 @@ public class ToDo implements Comparable<ToDo> {
     String description;
     Date dueDate;
     Integer size; // In hours
-    Integer priority; // 1 - 3 (Low, Medium, High)
+    Priority priority; // 1 - 3 (Low, Medium, High)
     Boolean addedToDatabase = false;
 
     public ToDo() {
@@ -29,7 +29,7 @@ public class ToDo implements Comparable<ToDo> {
         this.description = description;
         this.dueDate = dueDate;
         this.size = size;
-        this.priority = priority;
+        this.priority = Priority.determinePriority(priority.intValue());
     }
 
     @Override
