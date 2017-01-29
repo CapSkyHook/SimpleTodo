@@ -67,7 +67,7 @@
                 android:layout_below="@+id/addToDoDescription" />
 
             <Spinner
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"

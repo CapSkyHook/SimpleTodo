@@ -67,6 +67,12 @@ public class AddTodoDialogFragment extends DialogFragment {
                 android.R.layout.simple_spinner_item, priorityLevels);
         prioritySpinner.setAdapter(priorityAdapter);
 
+        NumberPicker yearNumberPicker = (NumberPicker) view.findViewById(R.id.addToDoDatePickerYear);
+        yearNumberPicker.setMaxValue(2030);
+        yearNumberPicker.setMinValue(2017);
+        NumberPicker dayNumberPicker = (NumberPicker) view.findViewById(R.id.addToDoDatePickerDay);
+        dayNumberPicker.setMinValue(1);
+        dayNumberPicker.setMaxValue(31);
 
 
         Button submit = (Button) view.findViewById(R.id.addToDoSubmitButton);
