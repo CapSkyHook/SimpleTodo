@@ -108,16 +108,6 @@ public class AddTodoDialogFragment extends DialogFragment {
 
     }
 
-//    public void resetDialog() {
-//        titleText.setText("");
-//        descriptionText.setText("");
-//        size.setText("");
-//        day.setValue(0);
-//        year.setValue(2015);
-//        month.setSelection(0);
-//        priority.setSelection(0);
-//    }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

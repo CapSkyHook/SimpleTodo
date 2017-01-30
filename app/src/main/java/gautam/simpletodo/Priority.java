@@ -12,12 +12,16 @@ public enum Priority {
 
     private int priorityNumber;
 
+    public int getPriorityNumber() {
+        return priorityNumber;
+    }
+
     public String toString() {
         switch (priorityNumber) {
             case 1:
                 return "LOW";
             case 2:
-                return "MED";
+                return "MEDIUM";
             case 3:
                 return "HIGH";
             default:

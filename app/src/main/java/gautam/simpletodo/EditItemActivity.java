@@ -7,7 +7,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.Spinner;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import static android.support.v7.widget.AppCompatDrawableManager.get;
+import static gautam.simpletodo.Priority.getAllPriorityLevels;
 
 /**
  * Secondary activity allowing for editting of existing ToDos
@@ -22,18 +31,66 @@ public class EditItemActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_item);
-        EditText toDoText = (EditText) findViewById(R.id.toDoMessage);
-        toDoText.setText(getIntent().getStringExtra("toDoText"));
+
+        EditText titleText = (EditText) findViewById(R.id.editTodoTitle);
+        EditText descriptionText = (EditText) findViewById(R.id.editToDoDescription);
+        EditText size = (EditText) findViewById(R.id.editToDoSize);
+        Spinner month = (Spinner) findViewById(R.id.editToDoMonthSpinner);
+        NumberPicker day = (NumberPicker) findViewById(R.id.editToDoDatePickerDay);
+        NumberPicker year = (NumberPicker) findViewById(R.id.editToDoDatePickerYear);
+        Spinner priority = (Spinner) findViewById(R.id.editToDoPriority);
+
+        String[] months = new String[] {
+                "January", "February", "March", "April", "May", "June", "July ", "August", "September",
+                "October", "November", "December"
+        };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, months);
+        month.setAdapter(adapter);
+
+        String[] priorityLevels = getAllPriorityLevels();
+        ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, priorityLevels);
+        priority.setAdapter(priorityAdapter);
+
+
+        year.setMaxValue(2030);
+        year.setMinValue(2017);
+        day.setMinValue(1);
+        day.setMaxValue(31);
+        titleText.setText(getIntent().getStringExtra("toDoTitle"));
+        descriptionText.setText(getIntent().getStringExtra("toDoDescription"));
+        Date dueDate = new Date(getIntent().getStringExtra("toDoDate"));
+        month.setSelection(dueDate.getMonth() - 1);
+        day.setValue(dueDate.getDay());
+        year.setValue(dueDate.getYear());
+        size.setText(getIntent().getStringExtra("toDoSize"));
+        priority.setSelection(Priority.determinePriorityFromString(getIntent().getStringExtra("toDoPriority")).getPriorityNumber() - 1);
     }
 
     /**
      * Returns back to main activity with new ToDo Text
-     * @param v
+     * @param view
      */
-    public void onSubmit(View v) {
-        EditText toDoText = (EditText) findViewById(R.id.toDoMessage);
+    public void onSubmit(View view) {
+
+        EditText titleText = (EditText) findViewById(R.id.editTodoTitle);
+        EditText descriptionText = (EditText) findViewById(R.id.editToDoDescription);
+        EditText size = (EditText) findViewById(R.id.editToDoSize);
+        Spinner month = (Spinner) findViewById(R.id.editToDoMonthSpinner);
+        NumberPicker day = (NumberPicker) findViewById(R.id.editToDoDatePickerDay);
+        NumberPicker year = (NumberPicker) findViewById(R.id.editToDoDatePickerYear);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year.getValue(), day.getValue(), Months.determineMonth(month.getSelectedItem().toString()).getMonthNumber());
+        Spinner priority = (Spinner) findViewById(R.id.editToDoPriority);
+
         Intent data = new Intent();
-        data.putExtra("toDoText", toDoText.getText().toString());
+        data.putExtra("toDoTitle", titleText.getText().toString());
+        data.putExtra("toDoDescription", descriptionText.getText().toString());
+        data.putExtra("toDoDate", calendar.getTime().toString());
+        data.putExtra("toDoSize", size.getText().toString());
+        data.putExtra("toDoPriority", priority.getSelectedItem().toString());
         setResult(RESULT_OK, data);
         finish();
     }

@@ -95,7 +95,11 @@ public class MainActivity extends AppCompatActivity implements AddTodoDialogFrag
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                 currentlyEdittedItemPosition = position;
                 Intent switchToEdit = new Intent(MainActivity.this, EditItemActivity.class);
-                switchToEdit.putExtra("toDoText", todoUIManager.getItems().get(position).title);
+                switchToEdit.putExtra("toDoTitle", todoUIManager.getItems().get(position).title);
+                switchToEdit.putExtra("toDoDescription", todoUIManager.getItems().get(position).description);
+                switchToEdit.putExtra("toDoDate", todoUIManager.getItems().get(position).dueDate.toString());
+                switchToEdit.putExtra("toDoSize", todoUIManager.getItems().get(position).size.toString());
+                switchToEdit.putExtra("toDoPriority", todoUIManager.getItems().get(position).priority.toString());
 
                 startActivityForResult(switchToEdit, REQUEST_CODE);
             }
@@ -124,7 +128,11 @@ public class MainActivity extends AppCompatActivity implements AddTodoDialogFrag
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             ToDo newTodo = new ToDo();
-            newTodo.title = data.getStringExtra("toDoText");
+            newTodo.title = data.getStringExtra("toDoTitle");
+            newTodo.description = data.getStringExtra("toDoDescription");
+            newTodo.dueDate = new Date(data.getStringExtra("toDoDate"));
+            newTodo.size = Integer.parseInt(data.getStringExtra("toDoSize"));
+            newTodo.priority = Priority.determinePriorityFromString(data.getStringExtra("toDoPriority"));
             updateToDoText(currentlyEdittedItemPosition, newTodo);
         }
 

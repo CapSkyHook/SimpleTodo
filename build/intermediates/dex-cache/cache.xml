@@ -7,7 +7,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="ddf71087309c7b49b5bece7e44981511db189a41">
+        sha1="0657ddd9cefcd73903438d6efe8bffa704deff62">
         <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/instant-run_fddf3ff45e0d96a869f90f74ea2a1f00539bc37e.jar" />
     </item>
     <item
@@ -34,7 +34,7 @@
         jumboMode="true"
         optimize="true"
         revision="25.0.2"
-        sha1="aa19fdc3e280bb5a708749fc7aed6e28ac61530f">
+        sha1="cbc5cc9c666fc23c92768bab08d2fe4136f81921">
         <dex dex="/Users/Gautam/Programming/SimpleTodo/app/build/intermediates/pre-dexed/debug/instant-run-bootstrap_6a0aab07bcd490958563eb31cccdc6d75dac10e5.jar" />
     </item>
     <item

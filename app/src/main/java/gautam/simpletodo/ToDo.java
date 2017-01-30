@@ -30,6 +30,8 @@ public class ToDo implements Comparable<ToDo> {
         this.dueDate = dueDate;
         this.size = size;
         this.priority = Priority.determinePriority(priority.intValue());
+        toDoCount++;
+        todoID = toDoCount;
     }
 
     @Override
