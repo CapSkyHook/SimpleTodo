@@ -66,7 +66,8 @@ public class EditItemActivity extends AppCompatActivity {
         day.setValue(dueDate.getDay());
         year.setValue(dueDate.getYear());
         size.setText(getIntent().getStringExtra("toDoSize"));
-        priority.setSelection(Priority.determinePriorityFromString(getIntent().getStringExtra("toDoPriority")).getPriorityNumber() - 1);
+
+        priority.setSelection(gautam.simpletodo.Priority.determinePriorityFromString(getIntent().getStringExtra("toDoPriority")).getPriorityNumber() - 1);
     }
 
     /**
@@ -82,7 +83,7 @@ public class EditItemActivity extends AppCompatActivity {
         NumberPicker day = (NumberPicker) findViewById(R.id.editToDoDatePickerDay);
         NumberPicker year = (NumberPicker) findViewById(R.id.editToDoDatePickerYear);
         Calendar calendar = Calendar.getInstance();
-        calendar.set(year.getValue(), day.getValue(), Months.determineMonth(month.getSelectedItem().toString()).getMonthNumber());
+        calendar.set(year.getValue(), day.getValue(), gautam.simpletodo.Months.determineMonth(month.getSelectedItem().toString()).getMonthNumber());
         Spinner priority = (Spinner) findViewById(R.id.editToDoPriority);
 
         Intent data = new Intent();

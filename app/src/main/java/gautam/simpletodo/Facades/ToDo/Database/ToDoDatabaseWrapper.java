@@ -91,7 +91,7 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean addToDo(ToDo todo) {
+    public boolean addToDo(gautam.simpletodo.ToDo todo) {
         // Create and/or open the database for writing
         SQLiteDatabase db = getWritableDatabase();
         Boolean isSuccessful = true;
@@ -118,8 +118,8 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
         return isSuccessful;
     }
 
-    public List<ToDo> getAllTodos() {
-        List<ToDo> todos = new ArrayList<>();
+    public List<gautam.simpletodo.ToDo> getAllTodos() {
+        List<gautam.simpletodo.ToDo> todos = new ArrayList<>();
 
         String POSTS_SELECT_QUERY = String.format("SELECT * FROM %s", TABLE_TODOS);
 
@@ -130,14 +130,15 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
         try {
             if (cursor.moveToFirst()) {
                 do {
-                    ToDo newTodo = new ToDo();
+                    gautam.simpletodo.ToDo newTodo = new gautam.simpletodo.ToDo();
                     newTodo.title = cursor.getString(cursor.getColumnIndex(KEY_TODO_TITLE));
                     newTodo.description =
                             cursor.getString(cursor.getColumnIndex(KEY_TODO_DESCRIPTION));
                     newTodo.dueDate = new Date(cursor.getString(cursor.getColumnIndex(KEY_TODO_DUE_DATE)));
-                    newTodo.priority = Priority.determinePriority(cursor.getInt(cursor.getColumnIndex(KEY_TODO_PRIORITY)));
+                    newTodo.priority = gautam.simpletodo.Priority.determinePriority(cursor.getInt(cursor.getColumnIndex(KEY_TODO_PRIORITY)));
                     newTodo.size = cursor.getInt(cursor.getColumnIndex(KEY_TODO_SIZE));
                     todos.add(newTodo);
+                    System.out.println(newTodo.title);
                 } while(cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -147,10 +148,19 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
+
+        deleteAllToDos();
+
         return todos;
     }
 
-    public int updateToDo(ToDo todo) {
+    public void deleteAllToDos() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_TODOS);
+        onCreate(db);
+    }
+
+    public int updateToDo(gautam.simpletodo.ToDo todo) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -165,7 +175,7 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
                 new String[] { String.valueOf(todo.getTodoID()) });
     }
 
-    public boolean deleteToDo(ToDo todo) {
+    public boolean deleteToDo(gautam.simpletodo.ToDo todo) {
         SQLiteDatabase db = getWritableDatabase();
         Boolean isSuccessful = true;
         db.beginTransaction();

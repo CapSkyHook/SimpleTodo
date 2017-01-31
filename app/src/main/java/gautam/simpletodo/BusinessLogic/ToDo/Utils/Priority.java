@@ -57,7 +57,7 @@ public enum Priority {
 
     public static String[] getAllPriorityLevels() {
         return new String[] {
-                Priority.HIGH.toString(), Priority.MEDIUM.toString(), Priority.LOW.toString()
+                Priority.LOW.toString(), Priority.MEDIUM.toString(), Priority.HIGH.toString()
         };
     }
 

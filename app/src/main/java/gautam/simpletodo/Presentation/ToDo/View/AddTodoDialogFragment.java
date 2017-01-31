@@ -30,7 +30,7 @@ public class AddTodoDialogFragment extends DialogFragment {
     private EditText mEditText;
 
     public interface AddTodoDialogFragmentListener {
-        void onFinishAddTodoDialogFragment(ToDo newToDo, View view);
+        void onFinishAddTodoDialogFragment(gautam.simpletodo.ToDo newToDo, View view);
     }
 
 
@@ -80,21 +80,21 @@ public class AddTodoDialogFragment extends DialogFragment {
             @Override
             public void onClick(View submitButton) {
 
-                ToDo newToDo = new ToDo();
+                gautam.simpletodo.ToDo newToDo = new gautam.simpletodo.ToDo();
                 EditText titleText = (EditText) view.findViewById(R.id.addTodoTitle);
                 newToDo.title = titleText.getText().toString();
                 EditText descriptionText = (EditText) view.findViewById(R.id.addToDoDescription);
-                newToDo.description = descriptionText.getText().toString();
+                newToDo.description = descriptionText.getText().toString() ;
                 EditText size = (EditText) view.findViewById(R.id.addToDoSize);
-                newToDo.size = Integer.parseInt(size.getText().toString());
+                newToDo.size = size.getText().toString().equals("") ? 0 : Integer.parseInt(size.getText().toString());
                 Spinner month = (Spinner) view.findViewById(R.id.addToDoMonthSpinner);
                 NumberPicker day = (NumberPicker) view.findViewById(R.id.addToDoDatePickerDay);
                 NumberPicker year = (NumberPicker) view.findViewById(R.id.addToDoDatePickerYear);
                 Calendar calendar = Calendar.getInstance();
-                calendar.set(year.getValue(), day.getValue(), Months.determineMonth(month.getSelectedItem().toString()).getMonthNumber());
+                calendar.set(year.getValue(), day.getValue(), gautam.simpletodo.Months.determineMonth(month.getSelectedItem().toString()).getMonthNumber());
                 newToDo.dueDate = calendar.getTime();
                 Spinner priority = (Spinner) view.findViewById(R.id.addToDoPriority);
-                newToDo.priority = Priority.determinePriorityFromString(priority.getSelectedItem().toString());
+                newToDo.priority = gautam.simpletodo.Priority.determinePriorityFromString(priority.getSelectedItem().toString());
 
                 AddTodoDialogFragmentListener listener = (AddTodoDialogFragmentListener) getActivity();
                 listener.onFinishAddTodoDialogFragment(newToDo, view);
@@ -111,16 +111,6 @@ public class AddTodoDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Get field from view
-        mEditText = (EditText) view.findViewById(R.id.addTodoTitle);
-
-        // Fetch arguments from bundle and set title
-        String title = getArguments().getString("title", "Enter Name");
-        getDialog().setTitle(title);
-        // Show soft keyboard automatically and request focus to field
-        mEditText.requestFocus();
-        getDialog().getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
 }
