@@ -12,17 +12,17 @@ import java.util.Iterator;
 
 public class ToDoManager {
 
-    private ArrayList<ToDo> toDoCollection;
-    private ToDoDatabaseManager databaseManager;
+    private ArrayList<gautam.simpletodo.ToDo> toDoCollection;
+    private gautam.simpletodo.ToDoDatabaseManager databaseManager;
 
     public ToDoManager(Context context) {
-        this.databaseManager = new ToDoDatabaseManager(context);
+        this.databaseManager = new gautam.simpletodo.ToDoDatabaseManager(context);
         toDoCollection = createAndPopulateToDoCollection();
     }
 
-    private ArrayList<ToDo> createAndPopulateToDoCollection() {
-        ArrayList<ToDo> todoList = new ArrayList<>();
-        HashMap<Integer, ToDo> allTodos = databaseManager.getAllToDos();
+    private ArrayList<gautam.simpletodo.ToDo> createAndPopulateToDoCollection() {
+        ArrayList<gautam.simpletodo.ToDo> todoList = new ArrayList<>();
+        HashMap<Integer, gautam.simpletodo.ToDo> allTodos = databaseManager.getToDos();
         Iterator<Integer> iterator = allTodos.keySet().iterator();
 
         while(iterator.hasNext()) {
@@ -31,7 +31,7 @@ public class ToDoManager {
         return todoList;
     }
 
-    public ArrayList<ToDo> getAllToDos() {
+    public ArrayList<gautam.simpletodo.ToDo> getAllToDos() {
         return toDoCollection;
     }
 
@@ -43,7 +43,7 @@ public class ToDoManager {
          return false;
     }
 
-    public boolean addToDo(ToDo newTodo) {
+    public boolean addToDo(gautam.simpletodo.ToDo newTodo) {
         if (databaseManager.addToDo(newTodo)) {
             toDoCollection.add(newTodo);
             return true;
@@ -51,8 +51,8 @@ public class ToDoManager {
         return false;
     }
 
-    public boolean updateToDo(int pos, ToDo newTodo) {
-        ToDo todoInQuestion = toDoCollection.get(pos);
+    public boolean updateToDo(int pos, gautam.simpletodo.ToDo newTodo) {
+        gautam.simpletodo.ToDo todoInQuestion = toDoCollection.get(pos);
         newTodo.id = todoInQuestion.id;
         newTodo.setTodoID(todoInQuestion.getTodoID());
 

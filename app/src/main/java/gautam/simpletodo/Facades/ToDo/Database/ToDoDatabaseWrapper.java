@@ -149,8 +149,6 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
             }
         }
 
-        deleteAllToDos();
-
         return todos;
     }
 

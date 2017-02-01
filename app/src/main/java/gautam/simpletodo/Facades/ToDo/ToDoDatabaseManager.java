@@ -12,30 +12,34 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ToDoDatabaseManager {
-    private ToDoDatabaseWrapper database;
-    private HashMap<Integer, ToDo> toDos;
+    private gautam.simpletodo.ToDoDatabaseWrapper database;
+    private HashMap<Integer, gautam.simpletodo.ToDo> toDos;
 
 
     public ToDoDatabaseManager(Context contextForDatabase ) {
-        this.database = ToDoDatabaseWrapper.getInstance(contextForDatabase);
+        this.database = gautam.simpletodo.ToDoDatabaseWrapper.getInstance(contextForDatabase);
         toDos = getAllToDos();
     }
 
-    public HashMap<Integer, ToDo> getAllToDos() {
-        HashMap<Integer, ToDo> loadedToDos = new HashMap<Integer, ToDo>();
-        List<ToDo> todosFromDatabase = database.getAllTodos();
+     private HashMap<Integer, gautam.simpletodo.ToDo> getAllToDos() {
+        HashMap<Integer, gautam.simpletodo.ToDo> loadedToDos = new HashMap<Integer, gautam.simpletodo.ToDo>();
+        List<gautam.simpletodo.ToDo> todosFromDatabase = database.getAllTodos();
 
-        Iterator<ToDo> iterator = todosFromDatabase.iterator();
+        Iterator<gautam.simpletodo.ToDo> iterator = todosFromDatabase.iterator();
 
         while (iterator.hasNext()) {
-            ToDo todo = iterator.next();
+            gautam.simpletodo.ToDo todo = iterator.next();
             loadedToDos.put(todo.getTodoID(), todo);
         }
 
         return loadedToDos;
     }
 
-    public boolean addToDo(ToDo todo) {
+    public HashMap<Integer, gautam.simpletodo.ToDo> getToDos() {
+        return toDos;
+    }
+
+    public boolean addToDo(gautam.simpletodo.ToDo todo) {
         if (database.addToDo(todo)) {
             todo.addedToDatabase = true;
             toDos.put(todo.getTodoID(), todo);
@@ -45,7 +49,7 @@ public class ToDoDatabaseManager {
         return false;
     }
 
-    public boolean removeToDo(ToDo todo) {
+    public boolean removeToDo(gautam.simpletodo.ToDo todo) {
         boolean success = database.deleteToDo(todo);
         if (success) {
             toDos.remove(todo.getTodoID());
@@ -57,7 +61,7 @@ public class ToDoDatabaseManager {
 
     }
 
-    public boolean updateToDo(ToDo todo) {
+    public boolean updateToDo(gautam.simpletodo.ToDo todo) {
         if (database.updateToDo(todo) == 1) {
             toDos.put(todo.getTodoID(), todo);
             return true;
