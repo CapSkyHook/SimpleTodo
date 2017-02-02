@@ -21,11 +21,7 @@ The following **optional** features are implemented:
 * [x] Add support for completion due dates for todo items (and display within listview item)
 * [x] Use a [DialogFragment](http://guides.codepath.com/android/Using-DialogFragment) instead of new Activity for editing items
 * [x] Add support for selecting the priority of each todo item (and display in listview item)
-* [ ] Tweak the style improving the UI / UX, play with colors, images or backgrounds
-
-The following **additional** features are implemented:
-
-* [ ] List anything else that you can get done to improve the app functionality!
+* WIP: Tweak the style improving the UI / UX, play with colors, images or backgrounds
 
 ## Video Walkthrough 
 
@@ -34,11 +30,18 @@ Here's a walkthrough of the required functionality:
 <img src='http://i.imgur.com/5WbYSYb.gif' title='Required Features Video Walkthrough' width='' alt='Required Features Video Walkthrough' />
 
 Here's a walkthrough of the optional functionality:
-<img src='http://imgur.com/6yfnjAj.gif' title='Required Features Video Walkthrough' width='' alt='Required Features Video Walkthrough' />
+<img src='http://imgur.com/6yfnjAj.gif' title='Optional Features Video Walkthrough' width='' alt='Optional Features Video Walkthrough' />
+
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
+* Uses MVVM application architecture with the caveat of no reactive programming. Instead, I am using a pseudo callback system relying on the fact that all the method calls are synchronous and can therefore return a boolean which will trigger a block that would normally be represented as a functor. 
 
+* The folders are organized by application layer of responsibility and individually by functionality (currently there is only one feature in this app ToDo CRUD). The base folders are Facades, interacts with a 3rd party entity, BusinessLogic, deals with the logic and application state management, and Presentation, deals with views, view models, view controllers and activities.
+
+* Some Application Infrastructure Next Steps: 
+    * Integrate reactive programming through observable properties, rather than streams, similar to Knockout.JS for the browser. 
+    * Dependency injection to allow for clear boundaries between the layers of the appliation (facade, business logic, presentation) as well as between different modules of functionality.
 
 ## License
 
