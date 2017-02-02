@@ -31,12 +31,13 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
 
     // Post Table Columns
     private static final String KEY_TODO_ID = "id";
-    private static final String KEY_TODO_TRACKING_ID = "trackingId";
     private static final String KEY_TODO_TITLE = "title";
     private static final String KEY_TODO_DESCRIPTION = "description";
     private static final String KEY_TODO_DUE_DATE = "duedate";
     private static final String KEY_TODO_SIZE = "size";
     private static final String KEY_TODO_PRIORITY = "priority";
+    private static final String KEY_TODO_TRACKING_ID = "todoid";
+
 
     public static synchronized ToDoDatabaseWrapper getInstance(Context context) {
         if (sharedInstance == null) {
@@ -68,11 +69,11 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
         String CREATE_TODOS_TABLE = "CREATE TABLE " + TABLE_TODOS +
                 "(" +
                 KEY_TODO_ID + " INTEGER PRIMARY KEY," + // Define a primary key
-                KEY_TODO_TRACKING_ID + " INTEGER," + // Define a primary key
+                KEY_TODO_TRACKING_ID + " INTEGER," +
                 KEY_TODO_TITLE + " TEXT," +
                 KEY_TODO_DESCRIPTION + " TEXT," +
                 KEY_TODO_DUE_DATE + " TEXT," +
-                KEY_TODO_PRIORITY + " INTEGER," +
+                KEY_TODO_PRIORITY + " TEXT," +
                 KEY_TODO_SIZE + " INTEGER" +
                 ")";
 
@@ -105,9 +106,11 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
             values.put(KEY_TODO_DUE_DATE, todo.dueDate.toString());
             values.put(KEY_TODO_PRIORITY, todo.priority.toString());
             values.put(KEY_TODO_SIZE, todo.size);
-            values.put(KEY_TODO_TRACKING_ID, todo.getTodoID());
+            values.put(KEY_TODO_TRACKING_ID, todo.getTrackingID());
 
             db.insertOrThrow(TABLE_TODOS, null, values);
+
+
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to add todo to database");
@@ -120,7 +123,6 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
 
     public List<gautam.simpletodo.ToDo> getAllTodos() {
         List<gautam.simpletodo.ToDo> todos = new ArrayList<>();
-
         String POSTS_SELECT_QUERY = String.format("SELECT * FROM %s", TABLE_TODOS);
 
         // "getReadableDatabase()" and "getWriteableDatabase()" return the same object (except under low
@@ -135,10 +137,11 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
                     newTodo.description =
                             cursor.getString(cursor.getColumnIndex(KEY_TODO_DESCRIPTION));
                     newTodo.dueDate = new Date(cursor.getString(cursor.getColumnIndex(KEY_TODO_DUE_DATE)));
-                    newTodo.priority = gautam.simpletodo.Priority.determinePriority(cursor.getInt(cursor.getColumnIndex(KEY_TODO_PRIORITY)));
+                    newTodo.priority = gautam.simpletodo.Priority.determinePriorityFromString(cursor.getString(cursor.getColumnIndex(KEY_TODO_PRIORITY)));
                     newTodo.size = cursor.getInt(cursor.getColumnIndex(KEY_TODO_SIZE));
+                    newTodo.id = cursor.getInt(cursor.getColumnIndex(KEY_TODO_ID));
+                    newTodo.setTrackingID(cursor.getInt(cursor.getColumnIndex(KEY_TODO_TRACKING_ID)));
                     todos.add(newTodo);
-                    System.out.println(newTodo.title);
                 } while(cursor.moveToNext());
             }
         } catch (Exception e) {
@@ -155,22 +158,27 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
     public void deleteAllToDos() {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TODOS);
-        onCreate(db);
     }
 
     public int updateToDo(gautam.simpletodo.ToDo todo) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_TODO_TITLE, todo.title);
-        values.put(KEY_TODO_DESCRIPTION, todo.description);
-        values.put(KEY_TODO_DUE_DATE, todo.dueDate.toString());
-        values.put(KEY_TODO_PRIORITY, todo.priority.toString());
-        values.put(KEY_TODO_SIZE, todo.size);
-
-        // Updating profile picture url for user with that userName
-        return db.update(TABLE_TODOS, values, KEY_TODO_TRACKING_ID + " = ?",
-                new String[] { String.valueOf(todo.getTodoID()) });
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        int val = 0;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TODO_TITLE, todo.title);
+            values.put(KEY_TODO_DESCRIPTION, todo.description);
+            values.put(KEY_TODO_DUE_DATE, todo.dueDate.toString());
+            values.put(KEY_TODO_PRIORITY, todo.priority.toString());
+            values.put(KEY_TODO_SIZE, todo.size);
+            val = db.update(TABLE_TODOS, values, KEY_TODO_TRACKING_ID+ "='" + todo.getTrackingID() + "'", null);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            Log.d(TAG, "Error while trying to update todo to database");
+        } finally {
+            db.endTransaction();
+        }
+        return val;
     }
 
     public boolean deleteToDo(gautam.simpletodo.ToDo todo) {
@@ -179,8 +187,8 @@ public class ToDoDatabaseWrapper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
 
-            db.delete(TABLE_TODOS, KEY_TODO_TRACKING_ID + " = ?",
-                    new String[] { String.valueOf(todo.getTodoID()) });
+            db.delete(TABLE_TODOS, KEY_TODO_ID + " = ?",
+                    new String[] { String.valueOf(todo.id) });
             db.setTransactionSuccessful();
         } catch (Exception e) {
             Log.d(TAG, "Error while trying to delete all posts and users");

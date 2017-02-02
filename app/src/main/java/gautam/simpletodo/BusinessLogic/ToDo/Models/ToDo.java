@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static gautam.simpletodo.R.id.priority;
+
 /**
  * Created by Gautam on 1/21/17.
  */
@@ -11,17 +13,16 @@ import java.util.Date;
 public class ToDo implements Comparable<ToDo> {
     private static Integer toDoCount = 0;
     Integer id;
-    private Integer todoID;
     String title;
     String description;
     Date dueDate;
     Integer size; // In hours
-    Priority priority; // 1 - 3 (Low, Medium, High)
+    gautam.simpletodo.Priority priority; // 1 - 3 (Low, Medium, High)
     Boolean addedToDatabase = false;
+    private Integer trackingID;
 
     public ToDo() {
-        toDoCount++;
-        todoID = toDoCount;
+        trackingID = ++toDoCount;
     }
 
     public ToDo(String title, String description, Date dueDate, Integer size, Integer priority) {
@@ -29,9 +30,7 @@ public class ToDo implements Comparable<ToDo> {
         this.description = description;
         this.dueDate = dueDate;
         this.size = size;
-        this.priority = Priority.determinePriority(priority.intValue());
-        toDoCount++;
-        todoID = toDoCount;
+        this.priority = gautam.simpletodo.Priority.determinePriority(priority.intValue());
     }
 
     @Override
@@ -44,11 +43,11 @@ public class ToDo implements Comparable<ToDo> {
         return comparisonResult;
     }
 
-    public Integer getTodoID() {
-        return todoID;
+    public Integer getTrackingID() {
+        return trackingID;
     }
 
-    public void setTodoID(int id) {
-        todoID = id;
+    public void setTrackingID(Integer trackingID) {
+        this.trackingID = trackingID;
     }
 }

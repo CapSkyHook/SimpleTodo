@@ -20,6 +20,7 @@ import android.widget.NumberPicker;
 import android.widget.Spinner;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import static gautam.simpletodo.Priority.getAllPriorityLevels;
 import static gautam.simpletodo.R.id.priority;
@@ -43,7 +44,7 @@ public class AddTodoDialogFragment extends DialogFragment {
     public static AddTodoDialogFragment newInstance() {
         AddTodoDialogFragment frag = new AddTodoDialogFragment();
         Bundle args = new Bundle();
-        args.putString("title", "So Ferb, What are we going to do today?");
+        args.putString("title", "New Task");
         frag.setArguments(args);
         return frag;
     }
@@ -53,7 +54,7 @@ public class AddTodoDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_add_todo, container);
         String[] months = new String[] {
-                "January", "February", "March", "April", "May", "June", "July ", "August", "September",
+                "January", "February", "March", "April", "May", "June", "July", "August", "September",
                 "October", "November", "December"
         };
         Spinner monthSpinner = (Spinner) view.findViewById(R.id.addToDoMonthSpinner);
@@ -90,9 +91,7 @@ public class AddTodoDialogFragment extends DialogFragment {
                 Spinner month = (Spinner) view.findViewById(R.id.addToDoMonthSpinner);
                 NumberPicker day = (NumberPicker) view.findViewById(R.id.addToDoDatePickerDay);
                 NumberPicker year = (NumberPicker) view.findViewById(R.id.addToDoDatePickerYear);
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(year.getValue(), day.getValue(), gautam.simpletodo.Months.determineMonth(month.getSelectedItem().toString()).getMonthNumber());
-                newToDo.dueDate = calendar.getTime();
+                newToDo.dueDate = new Date(year.getValue(), gautam.simpletodo.Months.determineMonth(month.getSelectedItem().toString()).getMonthNumber(), day.getValue());
                 Spinner priority = (Spinner) view.findViewById(R.id.addToDoPriority);
                 newToDo.priority = gautam.simpletodo.Priority.determinePriorityFromString(priority.getSelectedItem().toString());
 

@@ -52,10 +52,6 @@ public class ToDoManager {
     }
 
     public boolean updateToDo(int pos, gautam.simpletodo.ToDo newTodo) {
-        gautam.simpletodo.ToDo todoInQuestion = toDoCollection.get(pos);
-        newTodo.id = todoInQuestion.id;
-        newTodo.setTodoID(todoInQuestion.getTodoID());
-
         if (databaseManager.updateToDo(newTodo)) {
             toDoCollection.set(pos, newTodo);
             return true;

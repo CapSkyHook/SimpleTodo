@@ -41,7 +41,7 @@ public class EditItemActivity extends AppCompatActivity {
         Spinner priority = (Spinner) findViewById(R.id.editToDoPriority);
 
         String[] months = new String[] {
-                "January", "February", "March", "April", "May", "June", "July ", "August", "September",
+                "January", "February", "March", "April", "May", "June", "July", "August", "September",
                 "October", "November", "December"
         };
 
@@ -63,7 +63,7 @@ public class EditItemActivity extends AppCompatActivity {
         descriptionText.setText(getIntent().getStringExtra("toDoDescription"));
         Date dueDate = new Date(getIntent().getStringExtra("toDoDate"));
         month.setSelection(dueDate.getMonth() - 1);
-        day.setValue(dueDate.getDay());
+        day.setValue(dueDate.getDate());
         year.setValue(dueDate.getYear());
         size.setText(getIntent().getStringExtra("toDoSize"));
 
@@ -82,14 +82,13 @@ public class EditItemActivity extends AppCompatActivity {
         Spinner month = (Spinner) findViewById(R.id.editToDoMonthSpinner);
         NumberPicker day = (NumberPicker) findViewById(R.id.editToDoDatePickerDay);
         NumberPicker year = (NumberPicker) findViewById(R.id.editToDoDatePickerYear);
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year.getValue(), day.getValue(), gautam.simpletodo.Months.determineMonth(month.getSelectedItem().toString()).getMonthNumber());
+        Date date = new Date(year.getValue(), gautam.simpletodo.Months.determineMonth(month.getSelectedItem().toString()).getMonthNumber(), day.getValue());
         Spinner priority = (Spinner) findViewById(R.id.editToDoPriority);
 
         Intent data = new Intent();
         data.putExtra("toDoTitle", titleText.getText().toString());
         data.putExtra("toDoDescription", descriptionText.getText().toString());
-        data.putExtra("toDoDate", calendar.getTime().toString());
+        data.putExtra("toDoDate", date.toString());
         data.putExtra("toDoSize", size.getText().toString());
         data.putExtra("toDoPriority", priority.getSelectedItem().toString());
         setResult(RESULT_OK, data);

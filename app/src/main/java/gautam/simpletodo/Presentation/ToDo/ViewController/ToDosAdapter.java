@@ -14,15 +14,15 @@ import java.util.Date;
  * Created by Gautam on 1/25/17.
  */
 
-public class ToDosAdapter extends ArrayAdapter<ToDo> {
-    public ToDosAdapter(Context context, ArrayList<ToDo> toDos) {
+public class ToDosAdapter extends ArrayAdapter<gautam.simpletodo.ToDo> {
+    public ToDosAdapter(Context context, ArrayList<gautam.simpletodo.ToDo> toDos) {
         super(context, 0, toDos);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        ToDo todo = getItem(position);
+        gautam.simpletodo.ToDo todo = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_todo, parent, false);
@@ -35,7 +35,8 @@ public class ToDosAdapter extends ArrayAdapter<ToDo> {
         // Populate the data into the template view using the data object
         title.setText(todo.title);
         // TODO: Format date properly
-        dueDate.setText(todo.dueDate.toString());
+        Date date = todo.dueDate;
+        dueDate.setText(date.getMonth() + "/" + date.getDate() + "/" + date.getYear());
         // TODO: Format priority correctly
         priority.setText(todo.priority.toString());
 

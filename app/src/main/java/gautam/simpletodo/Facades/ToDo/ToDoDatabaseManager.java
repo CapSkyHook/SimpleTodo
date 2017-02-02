@@ -19,18 +19,17 @@ public class ToDoDatabaseManager {
     public ToDoDatabaseManager(Context contextForDatabase ) {
         this.database = gautam.simpletodo.ToDoDatabaseWrapper.getInstance(contextForDatabase);
         toDos = getAllToDos();
+        // Uncomment following line to clear database
+//        database.deleteAllToDos();
     }
 
      private HashMap<Integer, gautam.simpletodo.ToDo> getAllToDos() {
         HashMap<Integer, gautam.simpletodo.ToDo> loadedToDos = new HashMap<Integer, gautam.simpletodo.ToDo>();
         List<gautam.simpletodo.ToDo> todosFromDatabase = database.getAllTodos();
 
-        Iterator<gautam.simpletodo.ToDo> iterator = todosFromDatabase.iterator();
-
-        while (iterator.hasNext()) {
-            gautam.simpletodo.ToDo todo = iterator.next();
-            loadedToDos.put(todo.getTodoID(), todo);
-        }
+         for (gautam.simpletodo.ToDo todo: todosFromDatabase) {
+             loadedToDos.put(todo.id, todo);
+         }
 
         return loadedToDos;
     }
@@ -42,7 +41,7 @@ public class ToDoDatabaseManager {
     public boolean addToDo(gautam.simpletodo.ToDo todo) {
         if (database.addToDo(todo)) {
             todo.addedToDatabase = true;
-            toDos.put(todo.getTodoID(), todo);
+            toDos.put(todo.id, todo);
             return true;
         }
 
@@ -52,7 +51,7 @@ public class ToDoDatabaseManager {
     public boolean removeToDo(gautam.simpletodo.ToDo todo) {
         boolean success = database.deleteToDo(todo);
         if (success) {
-            toDos.remove(todo.getTodoID());
+            toDos.remove(todo.id);
         }
 
         return success;
@@ -62,8 +61,9 @@ public class ToDoDatabaseManager {
     }
 
     public boolean updateToDo(gautam.simpletodo.ToDo todo) {
-        if (database.updateToDo(todo) == 1) {
-            toDos.put(todo.getTodoID(), todo);
+        int v = database.updateToDo(todo);
+        if (v >= 1) {
+            toDos.put(todo.id, todo);
             return true;
         }
         return false;

@@ -31,26 +31,27 @@ import static gautam.simpletodo.R.id.size;
 /**
     Main Activity class for Todo Application allowing for CRUD functionality for ToDos
  */
-public class MainActivity extends AppCompatActivity implements AddTodoDialogFragment.AddTodoDialogFragmentListener {
+public class MainActivity extends AppCompatActivity implements gautam.simpletodo.AddTodoDialogFragment.AddTodoDialogFragmentListener {
 
     /**
      * Constants
      */
-    ToDo SEED_TODO_1 = new ToDo("Fly to the moon", "Build a rocket ship in factorio and fly to the moon", new Date(), 2, 3);
-    ToDo SEED_TODO_2 = new ToDo("Tuck and Roll", "Practice evasive maneuvers", new Date(), 10, 1);
+    gautam.simpletodo.ToDo SEED_TODO_1 = new gautam.simpletodo.ToDo("Fly to the moon", "Build a rocket ship in factorio and fly to the moon", new Date(), 2, 3);
+    gautam.simpletodo.ToDo SEED_TODO_2 = new gautam.simpletodo.ToDo("Tuck and Roll", "Practice evasive maneuvers", new Date(), 10, 1);
 
     /**
      * View Management Data
      */
-    ArrayAdapter<ToDo> itemsAdapter;
+    ArrayAdapter<gautam.simpletodo.ToDo> itemsAdapter;
     ListView lvItems;
     private Integer currentlyEdittedItemPosition = null;
+    private gautam.simpletodo.ToDo currentlyEdittedItem = null;
     private final int REQUEST_CODE = 20;
 
     /**
      * Todo Management Data
      */
-    private ToDoUIManager todoUIManager;
+    private gautam.simpletodo.ToDoUIManager todoUIManager;
 
 
 
@@ -61,15 +62,15 @@ public class MainActivity extends AppCompatActivity implements AddTodoDialogFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        todoUIManager = new ToDoUIManager(getBaseContext());
+        todoUIManager = new gautam.simpletodo.ToDoUIManager(getBaseContext());
         lvItems = (ListView) findViewById(R.id.lvItems);
-        ArrayList<ToDo> todoItems = todoUIManager.getItems();
-        if (todoItems.size() == 0) {
-            todoUIManager.addTodo(SEED_TODO_1);
-            todoUIManager.addTodo(SEED_TODO_2);
-        }
+        ArrayList<gautam.simpletodo.ToDo> todoItems = todoUIManager.getItems();
+//        if (todoItems.size() == 0) {
+//            todoUIManager.addTodo(SEED_TODO_1);
+//            todoUIManager.addTodo(SEED_TODO_2);
+//        }
 
-        itemsAdapter = new ToDosAdapter(getBaseContext(), todoUIManager.getItems());
+        itemsAdapter = new gautam.simpletodo.ToDosAdapter(getBaseContext(), todoUIManager.getItems());
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
     }
@@ -94,13 +95,14 @@ public class MainActivity extends AppCompatActivity implements AddTodoDialogFrag
             @Override
             public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
                 currentlyEdittedItemPosition = position;
-                Intent switchToEdit = new Intent(MainActivity.this, EditItemActivity.class);
+                Intent switchToEdit = new Intent(MainActivity.this, gautam.simpletodo.EditItemActivity.class);
                 switchToEdit.putExtra("toDoTitle", todoUIManager.getItems().get(position).title);
                 switchToEdit.putExtra("toDoDescription", todoUIManager.getItems().get(position).description);
                 switchToEdit.putExtra("toDoDate", todoUIManager.getItems().get(position).dueDate.toString());
                 switchToEdit.putExtra("toDoSize", todoUIManager.getItems().get(position).size.toString());
                 switchToEdit.putExtra("toDoPriority", todoUIManager.getItems().get(position).priority.toString());
-
+                currentlyEdittedItem = todoUIManager.getItems().get(position);
+                currentlyEdittedItemPosition = position;
                 startActivityForResult(switchToEdit, REQUEST_CODE);
             }
         }
@@ -127,13 +129,12 @@ public class MainActivity extends AppCompatActivity implements AddTodoDialogFrag
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            ToDo newTodo = new ToDo();
-            newTodo.title = data.getStringExtra("toDoTitle");
-            newTodo.description = data.getStringExtra("toDoDescription");
-            newTodo.dueDate = new Date(data.getStringExtra("toDoDate"));
-            newTodo.size = Integer.parseInt(data.getStringExtra("toDoSize"));
-            newTodo.priority = Priority.determinePriorityFromString(data.getStringExtra("toDoPriority"));
-            updateToDoText(currentlyEdittedItemPosition, newTodo);
+            currentlyEdittedItem.title = data.getStringExtra("toDoTitle");
+            currentlyEdittedItem.description = data.getStringExtra("toDoDescription");
+            currentlyEdittedItem.dueDate = new Date(data.getStringExtra("toDoDate"));
+            currentlyEdittedItem.size = Integer.parseInt(data.getStringExtra("toDoSize"));
+            currentlyEdittedItem.priority = gautam.simpletodo.Priority.determinePriorityFromString(data.getStringExtra("toDoPriority"));
+            updateToDoText(currentlyEdittedItemPosition, currentlyEdittedItem);
         }
 
     }
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements AddTodoDialogFrag
      * @param listItemID position of ToDo in ToDos list
      * @param todo new value of ToDo
      */
-    private void updateToDoText(Integer listItemID, ToDo todo) {
+    private void updateToDoText(Integer listItemID, gautam.simpletodo.ToDo todo) {
         if (todoUIManager.updateTodo(listItemID, todo)) {
             itemsAdapter.notifyDataSetChanged();
         }
@@ -160,11 +161,11 @@ public class MainActivity extends AppCompatActivity implements AddTodoDialogFrag
 
     private void showAddDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        AddTodoDialogFragment addToDoDialogFragment = AddTodoDialogFragment.newInstance();
+        gautam.simpletodo.AddTodoDialogFragment addToDoDialogFragment = gautam.simpletodo.AddTodoDialogFragment.newInstance();
         addToDoDialogFragment.show(fm, "fragment_add_todo");
     }
 
-    public void onFinishAddTodoDialogFragment(ToDo toDo, View view) {
+    public void onFinishAddTodoDialogFragment(gautam.simpletodo.ToDo toDo, View view) {
 
         if (todoUIManager.addTodo(toDo)) {
             itemsAdapter.notifyDataSetChanged();
